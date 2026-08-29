@@ -1,0 +1,5 @@
+-- CREATE THE DATABASE
+
+CREATE DATABASE olist_bi;
+
+USE olist_bi;
