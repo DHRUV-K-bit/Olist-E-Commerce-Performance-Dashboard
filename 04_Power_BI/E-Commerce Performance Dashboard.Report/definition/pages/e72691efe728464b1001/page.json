@@ -1,0 +1,75 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "e72691efe728464b1001",
+  "displayName": "Sao Paulo(SP) TTIP",
+  "displayOption": "ActualSize",
+  "height": 225,
+  "width": 425,
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "188e57670ca4b73f6620",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Geography Lookup"
+              }
+            },
+            "Property": "State"
+          }
+        },
+        "type": "Categorical",
+        "howCreated": "Drillthrough"
+      }
+    ]
+  },
+  "pageBinding": {
+    "name": "b0e17a6f915bf42b9855",
+    "type": "Tooltip",
+    "parameters": [
+      {
+        "name": "c51149294889cc426c23",
+        "boundFilter": "188e57670ca4b73f6620",
+        "fieldExpr": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Geography Lookup"
+              }
+            },
+            "Property": "State"
+          }
+        }
+      }
+    ]
+  },
+  "objects": {
+    "background": [
+      {
+        "properties": {
+          "color": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'#172B4D'"
+                  }
+                }
+              }
+            }
+          },
+          "transparency": {
+            "expr": {
+              "Literal": {
+                "Value": "0D"
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "visibility": "HiddenInViewMode",
+  "type": "Tooltip"
+}

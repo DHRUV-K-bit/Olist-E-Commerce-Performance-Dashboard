@@ -1,0 +1,119 @@
+table 'OrderItems Data'
+	lineageTag: ceac0ae9-c316-4656-8fe2-a8f13f2f1cf7
+
+	column OrderItemKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 056f48d3-0026-4dc4-acd7-19cc5f3164d6
+		summarizeBy: count
+		sourceColumn: OrderItemKey
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Order_ID
+		dataType: string
+		lineageTag: 157597b8-9b9b-41dc-b590-1d9b289c86cc
+		summarizeBy: none
+		sourceColumn: Order_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Order_Item_ID
+		dataType: int64
+		formatString: 0
+		lineageTag: 8bd85a90-6201-47bc-ace5-697659914f10
+		summarizeBy: count
+		sourceColumn: Order_Item_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProductKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 900f4e7d-8cdb-4db1-a800-670aba3d1c47
+		summarizeBy: none
+		sourceColumn: ProductKey
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column SellerKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: aa2ffb13-7970-445c-889e-5d94eb411eec
+		summarizeBy: count
+		sourceColumn: SellerKey
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 6ddf1709-ddd8-44f3-82d1-4e5067526da3
+		summarizeBy: count
+		sourceColumn: CustomerKey
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Shipping_Limit_Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: d36f01c9-c173-49b7-8ab3-d38ce9dc92b1
+		summarizeBy: none
+		sourceColumn: Shipping_Limit_Date
+
+		variation Variation
+			isDefault
+			relationship: b230c73f-52ef-4a98-aac4-9d0f205380f6
+			defaultHierarchy: LocalDateTable_467685d3-078c-43c2-8473-20bfd682b07e.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Price
+		dataType: double
+		lineageTag: 9f84b7eb-d156-492b-8e0c-9733ce357013
+		summarizeBy: sum
+		sourceColumn: Price
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Freight_Value
+		dataType: double
+		formatString: "R$"#,0.00;-"R$"#,0.00;"R$"#,0.00
+		lineageTag: 8277b4c9-cd51-4a6f-b663-4df322ee8fe6
+		summarizeBy: sum
+		sourceColumn: Freight_Value
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"es-BR"}
+
+	partition 'OrderItems Data' = m
+		mode: import
+		source =
+				let
+				  Source = MySQL.Database("127.0.0.1", "olist_bi"),
+				  #"Navigation 1" = Source{[Schema = "olist_bi", Item = "fact_orderitems"]}[Data],
+				    #"Removed Columns" = Table.RemoveColumns(#"Navigation 1",{"olist_bi.dim_customer", "olist_bi.dim_product", "olist_bi.dim_seller", "olist_bi.fact_orders"})
+				in
+				    #"Removed Columns"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

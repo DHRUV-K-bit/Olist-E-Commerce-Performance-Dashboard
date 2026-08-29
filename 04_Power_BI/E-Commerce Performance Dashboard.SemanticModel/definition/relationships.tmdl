@@ -1,0 +1,111 @@
+relationship b230c73f-52ef-4a98-aac4-9d0f205380f6
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'OrderItems Data'.Shipping_Limit_Date
+	toColumn: LocalDateTable_467685d3-078c-43c2-8473-20bfd682b07e.Date
+
+relationship 25c5a98c-6736-4b7e-8d70-72c4f96d0d69
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'OrderReviews Data'.Review_Creation_Timestamp
+	toColumn: LocalDateTable_649756f1-9820-4d29-b624-c6ca3053c07d.Date
+
+relationship e35f6c71-3605-4b9e-998b-1f070d42a996
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'OrderReviews Data'.Review_Answer_Timestamp
+	toColumn: LocalDateTable_ec2cf775-983c-434f-9fce-c57def3f303f.Date
+
+relationship 249f4be4-f241-484f-9dcc-7bfafbf29673
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'Orders Data'.Purchase_Timestamp
+	toColumn: LocalDateTable_08f35404-ba63-4378-8f39-bf251a8e0748.Date
+
+relationship 9741c2e8-7cb5-4aeb-b6a1-2d8237730778
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'Orders Data'.Approved_Timestamp
+	toColumn: LocalDateTable_64c5a61f-0c7c-4152-b3ad-6a5375f13724.Date
+
+relationship 8d4d0a61-50c1-4789-a8f4-52da5ccc572e
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'Orders Data'.Carrier_Date
+	toColumn: LocalDateTable_870aefbd-d22c-4dea-bc45-f1fd761f7fef.Date
+
+relationship 4c02a03d-65fd-4b67-b9fa-cc4aa10b87ec
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'Orders Data'.Customer_Delivery_Date
+	toColumn: LocalDateTable_53b890d5-1732-4616-9584-c5e1f7269298.Date
+
+relationship cb297ea3-f5a3-4fcb-86c6-f0df814d4002
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'Orders Data'.Estimated_Delivery_Date
+	toColumn: LocalDateTable_5974c6f9-a65a-4ec4-ba5e-42996fa0db9f.Date
+
+relationship 0061f33b-6525-4134-8d12-e8447c12aa5f
+	fromColumn: 'Customer Lookup'.GeographyKey
+	toColumn: 'Geography Lookup'.GeographyKey
+
+	annotation PBI_IsFromSource = FS
+
+relationship 4cbf52ca-9ff6-4e89-9a6a-621dcae4ba7c
+	fromColumn: 'Product Lookup'.CategoryKey
+	toColumn: 'Category Lookup'.CategoryKey
+
+	annotation PBI_IsFromSource = FS
+
+relationship 48d66ecc-0e6c-4e81-a5f6-70d47e84bdc9
+	fromColumn: 'Seller Lookup'.GeographyKey
+	toColumn: 'Geography Lookup'.GeographyKey
+
+	annotation PBI_IsFromSource = FS
+
+relationship 933f63d0-c3fd-4838-8ee1-faf6f2b260a9
+	isActive: false
+	fromColumn: 'OrderItems Data'.CustomerKey
+	toColumn: 'Customer Lookup'.CustomerKey
+
+	annotation PBI_IsFromSource = FS
+
+relationship 504b1e9f-f5d5-47ca-be39-0969e1e19703
+	fromColumn: 'OrderItems Data'.ProductKey
+	toColumn: 'Product Lookup'.ProductKey
+
+	annotation PBI_IsFromSource = FS
+
+relationship b908fdab-70df-458f-9bd1-afbbcbf1db04
+	isActive: false
+	fromColumn: 'OrderItems Data'.SellerKey
+	toColumn: 'Seller Lookup'.SellerKey
+
+	annotation PBI_IsFromSource = FS
+
+relationship b3f2a68d-c5fd-48e0-8179-096e6f2e75d7
+	fromColumn: 'OrderPayment Data'.Order_ID
+	toColumn: 'Orders Data'.OrderID
+
+	annotation PBI_IsFromSource = FS
+
+relationship d9073faf-697e-47ee-80e9-e85533f71054
+	isActive: false
+	fromColumn: 'OrderReviews Data'.Order_ID
+	toColumn: 'Orders Data'.OrderID
+
+	annotation PBI_IsFromSource = FS
+
+relationship bde8c6e3-9fab-6b06-1086-7fdd1fa16b45
+	fromColumn: 'Orders Data'.PurchaseDateKey
+	toColumn: 'Calendar Lookup'.DateKey
+
+relationship d75a4e59-0126-c620-6131-d7f9fc4fdde2
+	fromColumn: 'OrderReviews Data'.ReviewDateKey
+	toColumn: 'Calendar Lookup'.DateKey
+
+relationship dc726ac9-2c26-38a7-997f-4822da51253c
+	fromColumn: 'Orders Data'.CustomerKey
+	toColumn: 'Customer Lookup'.CustomerKey
+
+	annotation PBI_IsFromSource = FS
+
+relationship 03965a17-7045-c9ed-040a-e36d7f8ab9f4
+	fromColumn: 'OrderItems Data'.Order_ID
+	toColumn: 'Orders Data'.OrderID
+
+	annotation PBI_IsFromSource = FS
+

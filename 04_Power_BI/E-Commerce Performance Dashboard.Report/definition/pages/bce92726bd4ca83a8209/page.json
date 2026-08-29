@@ -1,0 +1,75 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "bce92726bd4ca83a8209",
+  "displayName": "Health Beauty TTIP",
+  "displayOption": "ActualSize",
+  "height": 225,
+  "width": 425,
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "e4708cac5e3043c479b4",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Category Lookup"
+              }
+            },
+            "Property": "Display Category Name"
+          }
+        },
+        "type": "Categorical",
+        "howCreated": "Drillthrough"
+      }
+    ]
+  },
+  "pageBinding": {
+    "name": "ea76641278f30e224c09",
+    "type": "Tooltip",
+    "parameters": [
+      {
+        "name": "574f34d6e2ac74b6feb0",
+        "boundFilter": "e4708cac5e3043c479b4",
+        "fieldExpr": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Category Lookup"
+              }
+            },
+            "Property": "Display Category Name"
+          }
+        }
+      }
+    ]
+  },
+  "objects": {
+    "background": [
+      {
+        "properties": {
+          "color": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'#172B4D'"
+                  }
+                }
+              }
+            }
+          },
+          "transparency": {
+            "expr": {
+              "Literal": {
+                "Value": "0D"
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "visibility": "HiddenInViewMode",
+  "type": "Tooltip"
+}

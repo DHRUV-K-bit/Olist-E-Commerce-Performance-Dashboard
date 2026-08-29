@@ -1,0 +1,132 @@
+table 'Geography Lookup'
+	lineageTag: dfe9ac5d-2d99-45ed-8dac-b42adb6ec6c2
+
+	column GeographyKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: fb4b5422-f0f7-4a7a-94cb-35af7c345e59
+		summarizeBy: none
+		sourceColumn: GeographyKey
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Zip_Prefix
+		dataType: int64
+		formatString: 0
+		lineageTag: 365651c3-e206-433e-b918-7ff2ec262f5b
+		dataCategory: PostalCode
+		summarizeBy: sum
+		sourceColumn: Zip_Prefix
+
+		annotation SummarizationSetBy = Automatic
+
+	column City
+		dataType: string
+		lineageTag: 269033ad-681b-4662-b13c-127c8fa5112d
+		dataCategory: City
+		summarizeBy: none
+		sourceColumn: City
+
+		annotation SummarizationSetBy = Automatic
+
+	column State
+		dataType: string
+		lineageTag: 8e8ab1f7-035a-4fae-afb5-eddb8183ffe8
+		dataCategory: StateOrProvince
+		summarizeBy: none
+		sourceColumn: State
+
+		annotation SummarizationSetBy = User
+
+	column Latitude
+		dataType: double
+		lineageTag: 6791500f-2a6c-41cc-902e-f035afed3fb9
+		dataCategory: Latitude
+		summarizeBy: sum
+		sourceColumn: Latitude
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Longitude
+		dataType: double
+		lineageTag: 3ed98976-9380-4b88-be07-683cdca2e727
+		dataCategory: Longitude
+		summarizeBy: sum
+		sourceColumn: Longitude
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'State Location' =
+			
+			SWITCH(
+			    'Geography Lookup'[State],
+			    "AC", "Acre, Brazil",
+			    "AL", "Alagoas, Brazil",
+			    "AP", "Amapá, Brazil",
+			    "AM", "Amazonas, Brazil",
+			    "BA", "Bahia, Brazil",
+			    "CE", "Ceará, Brazil",
+			    "DF", "Distrito Federal, Brazil",
+			    "ES", "Espírito Santo, Brazil",
+			    "GO", "Goiás, Brazil",
+			    "MA", "Maranhão, Brazil",
+			    "MT", "Mato Grosso, Brazil",
+			    "MS", "Mato Grosso do Sul, Brazil",
+			    "MG", "Minas Gerais, Brazil",
+			    "PA", "Pará, Brazil",
+			    "PB", "Paraíba, Brazil",
+			    "PR", "Paraná, Brazil",
+			    "PE", "Pernambuco, Brazil",
+			    "PI", "Piauí, Brazil",
+			    "RJ", "Rio de Janeiro, Brazil",
+			    "RN", "Rio Grande do Norte, Brazil",
+			    "RS", "Rio Grande do Sul, Brazil",
+			    "RO", "Rondônia, Brazil",
+			    "RR", "Roraima, Brazil",
+			    "SC", "Santa Catarina, Brazil",
+			    "SP", "São Paulo, Brazil",
+			    "SE", "Sergipe, Brazil",
+			    "TO", "Tocantins, Brazil"
+			)
+		lineageTag: ebeb1c48-da4d-4d6e-a820-d59c342bbb6c
+		dataCategory: StateOrProvince
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	hierarchy 'Geography Hierarchy'
+		lineageTag: 14f27f16-7712-4ee8-9b18-d96d3866ede3
+
+		level State
+			lineageTag: 486b3dc8-f21e-43cc-a71d-04d7b6af1ef7
+			column: State
+
+		level City
+			lineageTag: 12075ccd-d7da-4a7d-bdd4-398e99955128
+			column: City
+
+		level Zip_Prefix
+			lineageTag: f77db4bc-e212-4d81-b7d7-09e58c6a86ec
+			column: Zip_Prefix
+
+	partition 'Geography Lookup' = m
+		mode: import
+		source =
+				let
+				  Source = MySQL.Database("127.0.0.1", "olist_bi"),
+				  #"Navigation 1" = Source{[Schema = "olist_bi", Item = "dim_geography"]}[Data],
+				    #"Removed Columns" = Table.RemoveColumns(#"Navigation 1",{"olist_bi.dim_customer", "olist_bi.dim_seller"})
+				in
+				  #"Removed Columns"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

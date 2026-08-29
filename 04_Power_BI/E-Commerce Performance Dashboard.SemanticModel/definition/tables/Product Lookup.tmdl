@@ -1,0 +1,130 @@
+table 'Product Lookup'
+	lineageTag: 205c1b09-53be-4ed2-967f-56abb1b01575
+
+	column ProductKey
+		dataType: int64
+		formatString: 0
+		lineageTag: 34080f42-f520-4777-8dd2-d864e71f338c
+		summarizeBy: none
+		sourceColumn: ProductKey
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Product_ID
+		dataType: string
+		lineageTag: 825a401a-35a1-4f4d-afa5-6a1e4ed6eccf
+		summarizeBy: none
+		sourceColumn: Product_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column CategoryKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: a1127cb1-7de7-4394-87cf-61ce9e5d5a2c
+		summarizeBy: none
+		sourceColumn: CategoryKey
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Product_Name_Length
+		dataType: int64
+		formatString: 0
+		lineageTag: 283b3917-076d-44ba-8fa6-9955f9e65f0f
+		summarizeBy: sum
+		sourceColumn: Product_Name_Length
+
+		annotation SummarizationSetBy = Automatic
+
+	column Product_Description_Length
+		dataType: int64
+		formatString: 0
+		lineageTag: 93ef98ac-0033-498c-8cba-98d847c3fbcb
+		summarizeBy: sum
+		sourceColumn: Product_Description_Length
+
+		annotation SummarizationSetBy = Automatic
+
+	column Weight_G
+		dataType: int64
+		formatString: 0
+		lineageTag: 20ef5d6f-8730-45af-ae1f-430c5d2d4998
+		summarizeBy: sum
+		sourceColumn: Weight_G
+
+		annotation SummarizationSetBy = Automatic
+
+	column Length_CM
+		dataType: int64
+		formatString: 0
+		lineageTag: 2f29a3d5-a56c-4dea-bdde-c212e4c84a27
+		summarizeBy: sum
+		sourceColumn: Length_CM
+
+		annotation SummarizationSetBy = Automatic
+
+	column Width_CM
+		dataType: int64
+		formatString: 0
+		lineageTag: b3cf1126-c6eb-45ab-b817-a304e2f37281
+		summarizeBy: sum
+		sourceColumn: Width_CM
+
+		annotation SummarizationSetBy = Automatic
+
+	column Height_CM
+		dataType: int64
+		formatString: 0
+		lineageTag: ffcd0849-c5b5-4db7-a53d-6744605cfa20
+		summarizeBy: sum
+		sourceColumn: Height_CM
+
+		annotation SummarizationSetBy = Automatic
+
+	column Photos_Qty
+		dataType: int64
+		formatString: 0
+		lineageTag: 0b1ad48c-7376-4f07-a1fd-4d15e5fb7ae0
+		summarizeBy: sum
+		sourceColumn: Photos_Qty
+
+		annotation SummarizationSetBy = Automatic
+
+	column Product_Volume
+		dataType: int64
+		lineageTag: 2920df9d-ad84-438a-bbc6-213ac400bd68
+		summarizeBy: sum
+		sourceColumn: Product_Volume
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Size_Category
+		dataType: string
+		lineageTag: d2a162a4-889e-414a-b852-a5f66edc5431
+		summarizeBy: none
+		sourceColumn: Size_Category
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Product Lookup' = m
+		mode: import
+		source =
+				let
+				  Source = MySQL.Database("127.0.0.1", "olist_bi"),
+				  #"Navigation 1" = Source{[Schema = "olist_bi", Item = "dim_product"]}[Data],
+				    #"Removed Columns" = Table.RemoveColumns(#"Navigation 1",{"olist_bi.dim_category", "olist_bi.fact_orderitems"}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Removed Columns",{{"Product_Volume", Int64.Type}})
+				in
+				  #"Changed Type"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

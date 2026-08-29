@@ -1,0 +1,69 @@
+table 'Category Lookup'
+	lineageTag: 5def056d-0784-47a8-810b-ca6fc707aa26
+
+	column CategoryKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: f145e348-8b51-4241-b4d2-2bbb01557f3c
+		summarizeBy: none
+		sourceColumn: CategoryKey
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Category_Name_PT
+		dataType: string
+		lineageTag: b670f5c7-46b1-4e61-ac0b-7b24cbee7a1e
+		summarizeBy: none
+		sourceColumn: Category_Name_PT
+
+		annotation SummarizationSetBy = Automatic
+
+	column Category_Name_EN
+		dataType: string
+		lineageTag: 034a1a67-ed14-4544-b77f-3ff8e009c0ab
+		summarizeBy: none
+		sourceColumn: Category_Name_EN
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Display Category Name' = ```
+			
+			COALESCE(
+			        'Category Lookup'[Category Name EN],
+			        'Category Lookup'[Category_Name_PT]
+			 )
+			
+			```
+		lineageTag: 09ad4403-afac-43d5-a659-6aa892f5f21d
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Category Name EN'
+		dataType: string
+		lineageTag: 354b707e-1875-40d4-a57e-aff57f1d76e5
+		summarizeBy: none
+		sourceColumn: Category Name EN
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Category Lookup' = m
+		mode: import
+		source =
+				let
+				  Source = MySQL.Database("127.0.0.1", "olist_bi"),
+				  #"Navigation 1" = Source{[Schema = "olist_bi", Item = "dim_category"]}[Data],
+				    #"Removed Columns" = Table.RemoveColumns(#"Navigation 1",{"olist_bi.dim_product"}),
+				    #"Added Custom" = Table.AddColumn(#"Removed Columns", "Category Name En", each Text.Proper(Text.Replace([Category_Name_EN], "_", " "))),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Added Custom",{{"Category Name En", type text}}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Changed Type",{{"Category Name En", "Category Name EN"}})
+				in
+				    #"Renamed Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

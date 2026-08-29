@@ -1,0 +1,56 @@
+table 'Customer Lookup'
+	lineageTag: afadfdc1-2c60-426d-a09a-5ff80fdb628e
+
+	column CustomerKey
+		dataType: int64
+		formatString: 0
+		lineageTag: e2b9a1df-374d-4d9a-b9a6-42f830ae7ca0
+		summarizeBy: none
+		sourceColumn: CustomerKey
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Customer_ID
+		dataType: string
+		lineageTag: a369cc61-75fb-46fc-a92e-180ebc1dd5ab
+		summarizeBy: none
+		sourceColumn: Customer_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Customer_Unique_ID
+		dataType: string
+		lineageTag: fe53cce6-fc78-40b6-b2bc-599408fedbe8
+		summarizeBy: none
+		sourceColumn: Customer_Unique_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column GeographyKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: acd5eabc-c85b-4e9c-a0ce-61328753bf5d
+		summarizeBy: none
+		sourceColumn: GeographyKey
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Customer Lookup' = m
+		mode: import
+		source =
+				let
+				  Source = MySQL.Database("127.0.0.1", "olist_bi"),
+				  #"Navigation 1" = Source{[Schema = "olist_bi", Item = "dim_customer"]}[Data],
+				    #"Removed Columns" = Table.RemoveColumns(#"Navigation 1",{"olist_bi.dim_geography", "olist_bi.fact_orderitems", "olist_bi.fact_orders"})
+				in
+				  #"Removed Columns"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

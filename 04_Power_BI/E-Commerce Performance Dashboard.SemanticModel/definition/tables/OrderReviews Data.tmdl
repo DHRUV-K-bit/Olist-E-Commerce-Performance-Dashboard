@@ -1,0 +1,113 @@
+table 'OrderReviews Data'
+	lineageTag: f74cc183-79ba-4bcc-9247-f90fa0b59fd6
+
+	column ReviewKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 7a98048c-b102-423a-a7d2-e3d6465b98a5
+		summarizeBy: count
+		sourceColumn: ReviewKey
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReviewDateKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 226e0e53-67b8-430d-b5fa-138c66048ee6
+		summarizeBy: none
+		sourceColumn: ReviewDateKey
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Order_ID
+		dataType: string
+		lineageTag: afb349a6-a81b-479c-aeda-82652271af17
+		summarizeBy: none
+		sourceColumn: Order_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Review_ID
+		dataType: string
+		lineageTag: deb8bb97-c00f-407f-820b-302551c82537
+		summarizeBy: none
+		sourceColumn: Review_ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Review_Score
+		dataType: int64
+		formatString: 0
+		lineageTag: 89376bec-03f6-480b-ae7f-f52498e89b85
+		summarizeBy: sum
+		sourceColumn: Review_Score
+
+		annotation SummarizationSetBy = Automatic
+
+	column Comment_Title
+		dataType: string
+		lineageTag: 71d3afd4-8f83-4a47-b21b-cda91ac01f27
+		summarizeBy: none
+		sourceColumn: Comment_Title
+
+		annotation SummarizationSetBy = Automatic
+
+	column Comment_Message
+		dataType: string
+		lineageTag: 3b94789b-fe91-4955-8017-ff6a822952e7
+		summarizeBy: none
+		sourceColumn: Comment_Message
+
+		annotation SummarizationSetBy = Automatic
+
+	column Review_Creation_Timestamp
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 034d7e45-9462-4390-b960-0626199525ee
+		summarizeBy: none
+		sourceColumn: Review_Creation_Timestamp
+
+		variation Variation
+			isDefault
+			relationship: 25c5a98c-6736-4b7e-8d70-72c4f96d0d69
+			defaultHierarchy: LocalDateTable_649756f1-9820-4d29-b624-c6ca3053c07d.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column Review_Answer_Timestamp
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 772dbf35-b58d-4c95-957b-eb8698b0090a
+		summarizeBy: none
+		sourceColumn: Review_Answer_Timestamp
+
+		variation Variation
+			isDefault
+			relationship: e35f6c71-3605-4b9e-998b-1f070d42a996
+			defaultHierarchy: LocalDateTable_ec2cf775-983c-434f-9fce-c57def3f303f.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'OrderReviews Data' = m
+		mode: import
+		source =
+				let
+				  Source = MySQL.Database("127.0.0.1", "olist_bi"),
+				  #"Navigation 1" = Source{[Schema = "olist_bi", Item = "fact_orderreviews"]}[Data],
+				    #"Removed Columns" = Table.RemoveColumns(#"Navigation 1",{"olist_bi.fact_orders"}),
+				    #"Trimmed Text" = Table.TransformColumns(#"Removed Columns",{{"Comment_Title", Text.Trim, type text}, {"Comment_Message", Text.Trim, type text}}),
+				    #"Cleaned Text" = Table.TransformColumns(#"Trimmed Text",{{"Comment_Title", Text.Clean, type text}, {"Comment_Message", Text.Clean, type text}}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Cleaned Text",{{"Review_Creation_Date", "Review_Creation_Timestamp"}})
+				in
+				  #"Renamed Columns"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

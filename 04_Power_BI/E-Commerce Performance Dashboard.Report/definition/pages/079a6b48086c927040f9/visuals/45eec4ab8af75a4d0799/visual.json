@@ -1,0 +1,38 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "45eec4ab8af75a4d0799",
+  "position": {
+    "x": 270.9416319488281,
+    "y": 0,
+    "z": 1000,
+    "height": 34.411248877650131,
+    "width": 249.12679375499729,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Category Sales Performance",
+                    "textStyle": {
+                      "fontSize": "14pt",
+                      "color": "#172b4d"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "parentGroupName": "7904cb8934b569fd5614"
+}

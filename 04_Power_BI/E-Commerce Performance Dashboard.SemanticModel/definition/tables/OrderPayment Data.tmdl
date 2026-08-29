@@ -1,0 +1,77 @@
+table 'OrderPayment Data'
+	lineageTag: 2309d092-efda-4f45-9f16-2426b21cbad6
+
+	column PaymentKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: c2f67910-d6bc-4ccf-a7b2-305958c96559
+		summarizeBy: count
+		sourceColumn: PaymentKey
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Order_ID
+		dataType: string
+		isHidden
+		lineageTag: 238ece9d-5be1-405e-a499-62dd9dd20fce
+		summarizeBy: none
+		sourceColumn: Order_ID
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Payment_Sequential
+		dataType: int64
+		formatString: 0
+		lineageTag: 646e4fae-f064-4973-988f-01bebfbd489c
+		summarizeBy: sum
+		sourceColumn: Payment_Sequential
+
+		annotation SummarizationSetBy = Automatic
+
+	column Payment_Type
+		dataType: string
+		lineageTag: 01b77548-cf5f-45f9-be90-74c43b03e03b
+		summarizeBy: none
+		sourceColumn: Payment_Type
+
+		annotation SummarizationSetBy = Automatic
+
+	column Payment_Installments
+		dataType: int64
+		formatString: 0
+		lineageTag: c501d56e-abf7-4157-8620-6acccec07784
+		summarizeBy: sum
+		sourceColumn: Payment_Installments
+
+		annotation SummarizationSetBy = Automatic
+
+	column Payment_Value
+		dataType: double
+		formatString: "R$"#,0.00;-"R$"#,0.00;"R$"#,0.00
+		lineageTag: 1a00cba9-ddf2-46f9-ac9e-e6d0704e045e
+		summarizeBy: sum
+		sourceColumn: Payment_Value
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"currencyCulture":"es-BR"}
+
+	partition 'OrderPayment Data' = m
+		mode: import
+		source =
+				let
+				  Source = MySQL.Database("127.0.0.1", "olist_bi"),
+				  #"Navigation 1" = Source{[Schema = "olist_bi", Item = "fact_orderpayment"]}[Data],
+				    #"Removed Columns" = Table.RemoveColumns(#"Navigation 1",{"olist_bi.fact_orders"})
+				in
+				  #"Removed Columns"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

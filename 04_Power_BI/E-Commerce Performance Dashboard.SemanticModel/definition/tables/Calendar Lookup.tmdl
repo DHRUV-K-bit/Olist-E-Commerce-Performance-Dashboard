@@ -1,0 +1,473 @@
+table 'Calendar Lookup'
+	lineageTag: 9c574663-30a7-4977-8b65-c8b3742ce059
+	dataCategory: Time
+
+	column DateKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: c88b5502-0c53-4dcf-88e4-5035c099ebf2
+		summarizeBy: none
+		sourceColumn: DateKey
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Full Date'
+		dataType: dateTime
+		isKey
+		formatString: dd-mm-yyyy
+		lineageTag: f43c6e13-ff9e-419c-8e4a-49479a364c70
+		summarizeBy: none
+		sourceColumn: Full Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column Day
+		dataType: int64
+		formatString: 0
+		lineageTag: a7c1de64-3d97-462b-916f-cc160fa1511b
+		summarizeBy: sum
+		sourceColumn: Day
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Day Name'
+		dataType: string
+		lineageTag: c97b316a-46b2-44a6-972f-4e88d7031de4
+		summarizeBy: none
+		sourceColumn: Day Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Day of Week'
+		dataType: int64
+		formatString: 0
+		lineageTag: b80e8732-d13a-456a-9105-fbcccd3b10fe
+		summarizeBy: sum
+		sourceColumn: Day of Week
+
+		annotation SummarizationSetBy = Automatic
+
+	column Week
+		dataType: int64
+		formatString: 0
+		lineageTag: 91b06b93-51c9-4c86-9af7-c201d21f8c0b
+		summarizeBy: sum
+		sourceColumn: Week
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month
+		dataType: int64
+		formatString: 0
+		lineageTag: 0bdfc701-bb50-49c2-ba34-14fde3f95e5f
+		summarizeBy: sum
+		sourceColumn: Month
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Name'
+		dataType: string
+		lineageTag: 8f7ed49e-4639-40fa-9434-3cc2bb3ff963
+		summarizeBy: none
+		sourceColumn: Month Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Short Name'
+		dataType: string
+		lineageTag: ed1e7aa5-d3a5-49f3-9688-624e02259e38
+		summarizeBy: none
+		sourceColumn: Month Short Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month Year'
+		dataType: string
+		lineageTag: bc0d3630-596e-46d9-84d3-22a8316eaeee
+		summarizeBy: none
+		sourceColumn: Month Year
+		sortByColumn: 'Year-Month Sort'
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Year-Month Sort'
+		dataType: int64
+		formatString: 0
+		lineageTag: 1774abfa-e334-4ba1-96a6-9ab69b44091e
+		summarizeBy: sum
+		sourceColumn: Year-Month Sort
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quarter
+		dataType: int64
+		formatString: 0
+		lineageTag: 2f2ae3ab-a384-48c1-841c-68aca4c9f7fe
+		summarizeBy: sum
+		sourceColumn: Quarter
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quarter-Year
+		dataType: string
+		lineageTag: 33db6bf9-ef77-43cf-8303-a8b8ad7d90a1
+		summarizeBy: none
+		sourceColumn: Quarter-Year
+		sortByColumn: 'Quarter-Year Sort'
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		dataType: int64
+		formatString: 0
+		lineageTag: 0fcc6c96-fdec-4bfb-b276-7c3c22f5f0cd
+		summarizeBy: sum
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Is Weekend'
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 3ef42c97-dc7f-40ba-b6c2-fcbb399df56d
+		summarizeBy: none
+		sourceColumn: Is Weekend
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Is Month Start'
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 585e5cfe-fbe4-458a-8b15-a8b5bd11e490
+		summarizeBy: none
+		sourceColumn: Is Month Start
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Is Month End'
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: b8a80610-592c-41b5-8ccf-5935dfd0a5e9
+		summarizeBy: none
+		sourceColumn: Is Month End
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Month-Year Short' =
+			
+			FORMAT('Calendar Lookup'[Full Date], "MMM-YY")
+		lineageTag: 33932c68-68fe-4c62-95c1-f38df708c1dc
+		summarizeBy: none
+		sortByColumn: 'Year-Month Sort'
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Quarter-Year Sort' =
+			
+			'Calendar Lookup'[Year] * 10 +
+			'Calendar Lookup'[Quarter]
+		formatString: 0
+		lineageTag: 45945319-0533-48be-a39b-e210e2843490
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	hierarchy 'Date Hierarchy'
+		lineageTag: a131ef7d-a705-4a56-9408-9bdfc8d4a42b
+
+		level Year
+			lineageTag: 81eb1046-1a59-4006-829a-dca04e0f009f
+			column: Year
+
+		level Quarter
+			lineageTag: c089a9e5-945f-4c31-9d69-812ca2df8445
+			column: Quarter
+
+		level 'Month Name'
+			lineageTag: c61b23b2-cb28-4030-96b7-8a773463094d
+			column: 'Month Name'
+
+		level 'Full Date'
+			lineageTag: 476ae242-d33a-4095-97db-e4a4e3046175
+			column: 'Full Date'
+
+	partition 'Calendar Lookup' = m
+		mode: import
+		source =
+				let
+				    // =========================================================
+				    // 1. SOURCE TABLES
+				    // =========================================================
+				
+				    Orders = #"Orders Data",
+				    Reviews = #"OrderReviews Data",
+				
+				    // =========================================================
+				    // 2. EXTRACT RELEVANT DATES FROM ORDERS
+				    // =========================================================
+				
+				    PurchaseDates =
+				        List.RemoveNulls(
+				            List.Transform(
+				                Orders[Purchase_Timestamp],
+				                each Date.From(_)
+				            )
+				        ),
+				
+				    // =========================================================
+				    // 3. EXTRACT RELEVANT DATES FROM REVIEWS
+				    // =========================================================
+				
+				    ReviewCreationDates =
+				        List.RemoveNulls(
+				            List.Transform(
+				                Reviews[Review_Creation_Timestamp],
+				                each Date.From(_)
+				            )
+				        ),
+				
+				    ReviewAnswerDates =
+				        List.RemoveNulls(
+				            List.Transform(
+				                Reviews[Review_Answer_Timestamp],
+				                each Date.From(_)
+				            )
+				        ),
+				
+				    // =========================================================
+				    // 4. COMBINE ALL RELEVANT DATES
+				    // =========================================================
+				
+				    AllDates =
+				        List.Combine({
+				            PurchaseDates,
+				            ReviewCreationDates,
+				            ReviewAnswerDates
+				        }),
+				
+				    // =========================================================
+				    // 5. FIND MINIMUM AND MAXIMUM DATE
+				    // =========================================================
+				
+				    StartDate = List.Min(AllDates),
+				    EndDate = List.Max(AllDates),
+				
+				    // =========================================================
+				    // 6. CREATE COMPLETE DATE LIST
+				    // =========================================================
+				
+				    DateList =
+				        List.Dates(
+				            StartDate,
+				            Duration.Days(EndDate - StartDate) + 1,
+				            #duration(1, 0, 0, 0)
+				        ),
+				
+				    // =========================================================
+				    // 7. CONVERT LIST TO TABLE
+				    // =========================================================
+				
+				    CalendarTable =
+				        Table.FromList(
+				            DateList,
+				            Splitter.SplitByNothing(),
+				            {"Full Date"}
+				        ),
+				
+				    ChangedType =
+				        Table.TransformColumnTypes(
+				            CalendarTable,
+				            {{"Full Date", type date}}
+				        ),
+				
+				    // =========================================================
+				    // 8. DATE KEY
+				    // =========================================================
+				
+				    AddDateKey =
+				        Table.AddColumn(
+				            ChangedType,
+				            "DateKey",
+				            each Number.FromText(
+				                Date.ToText([Full Date], "yyyyMMdd")
+				            ),
+				            Int64.Type
+				        ),
+				
+				    // =========================================================
+				    // 9. DAY
+				    // =========================================================
+				
+				    AddDay =
+				        Table.AddColumn(
+				            AddDateKey,
+				            "Day",
+				            each Date.Day([Full Date]),
+				            Int64.Type
+				        ),
+				
+				    // =========================================================
+				    // 10. DAY NAME
+				    // =========================================================
+				
+				    AddDayName =
+				        Table.AddColumn(
+				            AddDay,
+				            "Day Name",
+				            each Date.DayOfWeekName([Full Date]),
+				            type text
+				        ),
+				
+				    // =========================================================
+				    // 11. DAY OF WEEK
+				    // Monday = 1, Sunday = 7
+				    // =========================================================
+				
+				    AddDayOfWeek =
+				        Table.AddColumn(
+				            AddDayName,
+				            "Day of Week",
+				            each Date.DayOfWeek([Full Date], Day.Monday) + 1,
+				            Int64.Type
+				        ),
+				
+				    // =========================================================
+				    // 12. WEEK OF YEAR
+				    // =========================================================
+				
+				    AddWeek =
+				        Table.AddColumn(
+				            AddDayOfWeek,
+				            "Week",
+				            each Date.WeekOfYear([Full Date], Day.Monday),
+				            Int64.Type
+				        ),
+				
+				    // =========================================================
+				    // 13. MONTH
+				    // =========================================================
+				
+				    AddMonth =
+				        Table.AddColumn(
+				            AddWeek,
+				            "Month",
+				            each Date.Month([Full Date]),
+				            Int64.Type
+				        ),
+				
+				    // =========================================================
+				    // 14. MONTH NAME
+				    // =========================================================
+				
+				    AddMonthName =
+				        Table.AddColumn(
+				            AddMonth,
+				            "Month Name",
+				            each Date.MonthName([Full Date]),
+				            type text
+				        ),
+				
+				    // =========================================================
+				    // 15. MONTH SHORT NAME
+				    // =========================================================
+				
+				    AddMonthShortName =
+				        Table.AddColumn(
+				            AddMonthName,
+				            "Month Short Name",
+				            each Date.ToText([Full Date], "MMM"),
+				            type text
+				        ),
+				
+				    // =========================================================
+				    // 16. MONTH YEAR
+				    // =========================================================
+				
+				    AddMonthYear =
+				        Table.AddColumn(
+				            AddMonthShortName,
+				            "Month Year",
+				            each Date.ToText([Full Date], "MMMM yyyy"),
+				            type text
+				        ),
+				
+				    // =========================================================
+				    // 17. YEAR-MONTH SORT
+				    // =========================================================
+				
+				    AddYearMonthSort =
+				        Table.AddColumn(
+				            AddMonthYear,
+				            "Year-Month Sort",
+				            each
+				                (Date.Year([Full Date]) * 100)
+				                + Date.Month([Full Date]),
+				            Int64.Type
+				        ),
+				
+				    // =========================================================
+				    // 18. QUARTER
+				    // =========================================================
+				
+				    AddQuarter =
+				        Table.AddColumn(
+				            AddYearMonthSort,
+				            "Quarter",
+				            each Date.QuarterOfYear([Full Date]),
+				            Int64.Type
+				        ),
+				
+				    // =========================================================
+				    // 19. QUARTER-YEAR
+				    // =========================================================
+				
+				    AddQuarterYear =
+				        Table.AddColumn(
+				            AddQuarter,
+				            "Quarter-Year",
+				            each
+				                "Q"
+				                & Text.From(Date.QuarterOfYear([Full Date]))
+				                & " "
+				                & Text.From(Date.Year([Full Date])),
+				            type text
+				        ),
+				
+				    // =========================================================
+				    // 20. YEAR
+				    // =========================================================
+				
+				    AddYear =
+				        Table.AddColumn(
+				            AddQuarterYear,
+				            "Year",
+				            each Date.Year([Full Date]),
+				            Int64.Type
+				        ),
+				    #"Reordered Columns" = Table.ReorderColumns(AddYear,{"DateKey", "Full Date", "Day", "Day Name", "Day of Week", "Week", "Month", "Month Name", "Month Short Name", "Month Year", "Year-Month Sort", "Quarter", "Quarter-Year", "Year"}),
+				    #"Added Is Weekend" = Table.AddColumn(#"Reordered Columns", "Is Weekend", each if [Day of Week] >= 6 then true else false),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Added Is Weekend",{{"Is Weekend", type logical}}),
+				    #"Added Is Month Start" = Table.AddColumn(#"Changed Type", "Is Month Start", each [Full Date] = Date.StartOfMonth([Full Date])),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Added Is Month Start",{{"Is Month Start", type logical}}),
+				    #"Added Is Month End" = Table.AddColumn(#"Changed Type1", "Is Month End", each [Full Date] = Date.EndOfMonth([Full Date])),
+				    #"Changed Type2" = Table.TransformColumnTypes(#"Added Is Month End",{{"Is Month End", type logical}})
+				in
+				    #"Changed Type2"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

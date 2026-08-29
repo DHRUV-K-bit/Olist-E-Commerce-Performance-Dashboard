@@ -1,0 +1,50 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "079a6b48086c927040f9",
+  "displayName": "Sales",
+  "displayOption": "FitToPage",
+  "height": 1080,
+  "width": 1920,
+  "objects": {
+    "background": [
+      {
+        "properties": {
+          "color": {
+            "solid": {
+              "color": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'#D1D5DB'"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "visibility": "HiddenInViewMode",
+  "visualInteractions": [
+    {
+      "source": "61ec4a15e628e9e6af30",
+      "target": "45eec4ab8af75a4d0799",
+      "type": "NoFilter"
+    },
+    {
+      "source": "c3bd9927c4907ccc6488",
+      "target": "32125b3f7fd8d40e157b",
+      "type": "NoFilter"
+    },
+    {
+      "source": "c3bd9927c4907ccc6488",
+      "target": "45eec4ab8af75a4d0799",
+      "type": "NoFilter"
+    },
+    {
+      "source": "c3bd9927c4907ccc6488",
+      "target": "61ec4a15e628e9e6af30",
+      "type": "NoFilter"
+    }
+  ]
+}

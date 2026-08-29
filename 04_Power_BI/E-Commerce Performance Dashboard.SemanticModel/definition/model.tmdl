@@ -1,0 +1,42 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-IN
+	valueFilterBehavior: independent
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["Category Lookup","Customer Lookup","Geography Lookup","Product Lookup","Seller Lookup","OrderItems Data","OrderPayment Data","OrderReviews Data","Orders Data","Calendar Lookup","Measure Table"]
+
+annotation PBI_ProTooling = ["DaxQueryView_Desktop","DevMode"]
+
+ref table 'Category Lookup'
+ref table 'Customer Lookup'
+ref table 'Geography Lookup'
+ref table 'Product Lookup'
+ref table 'Seller Lookup'
+ref table 'OrderItems Data'
+ref table DateTableTemplate_560553a0-a8d5-473e-be84-e13db94d1086
+ref table LocalDateTable_467685d3-078c-43c2-8473-20bfd682b07e
+ref table 'OrderPayment Data'
+ref table 'OrderReviews Data'
+ref table LocalDateTable_649756f1-9820-4d29-b624-c6ca3053c07d
+ref table LocalDateTable_ec2cf775-983c-434f-9fce-c57def3f303f
+ref table 'Orders Data'
+ref table LocalDateTable_08f35404-ba63-4378-8f39-bf251a8e0748
+ref table LocalDateTable_64c5a61f-0c7c-4152-b3ad-6a5375f13724
+ref table LocalDateTable_870aefbd-d22c-4dea-bc45-f1fd761f7fef
+ref table LocalDateTable_53b890d5-1732-4616-9584-c5e1f7269298
+ref table LocalDateTable_5974c6f9-a65a-4ec4-ba5e-42996fa0db9f
+ref table 'Calendar Lookup'
+ref table 'Measure Table'
+ref table 'Customer Metric Selection'
+ref table 'Price Adjustment (%)'
+ref table 'Product Performance Metric'
+ref table 'Delivery Performance Metric'
+
+ref cultureInfo en-US
+

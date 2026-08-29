@@ -1,0 +1,1056 @@
+table 'Measure Table'
+	lineageTag: f89c62ac-f4a7-4dba-85c7-446838deab10
+
+	measure 'Gross Sales' =
+			
+			SUM('OrderItems Data'[Price])
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: Executive KPIs
+		lineageTag: a0d378f1-547a-4826-b477-f4c29a48b203
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Total Orders' =
+			
+			COUNTROWS('Orders Data')
+		formatString: #,0
+		displayFolder: Executive KPIs
+		lineageTag: afa6259b-79d7-41a2-b936-b56ad9a986dc
+
+	measure 'Total Order Items' =
+			
+			COUNTROWS('OrderItems Data')
+		formatString: #,0
+		displayFolder: Order Performance
+		lineageTag: fbe645bd-3848-4ce3-820b-0781ce4bf157
+
+	measure 'Total Customers' =
+			
+			COUNTROWS(
+			    FILTER(
+			        VALUES('Customer Lookup'[Customer_Unique_ID]),
+			        CALCULATE([Total Orders]) > 0
+			    )
+			)
+		formatString: #,0
+		displayFolder: Executive KPIs
+		lineageTag: 484f71ca-d57f-47c9-acd0-d0a427b1e1d7
+
+	measure 'Average Order Value' =
+			
+			DIVIDE(
+			        [Gross Sales],
+			        [Total Orders]
+			)
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: Executive KPIs
+		lineageTag: 65c43374-1ae9-40ba-ae86-993d584ce75a
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Average Review Score' =
+			
+			AVERAGE('OrderReviews Data'[Review_Score])
+		formatString: 0.00
+		displayFolder: Executive KPIs
+		lineageTag: 293beb58-56c2-4195-9bd2-4c3d99f0b806
+
+	measure 'Average Delivery Days' =
+			
+			AVERAGE('Orders Data'[Delivery_Days])
+		formatString: #,0
+		displayFolder: Executive KPIs
+		lineageTag: f43f21be-2102-494f-92ae-f17bba9a093f
+
+	measure 'Delivered Orders' =
+			
+			CALCULATE(
+			    [Total Orders],
+			    'Orders Data'[Order_Status] = "delivered"
+			)
+		formatString: #,0
+		displayFolder: Order Performance
+		lineageTag: 03b95369-13a0-4114-944c-f20a7d876f35
+
+	measure 'Delivered Sales' =
+			
+			CALCULATE(
+			    [Gross Sales],
+			    'Orders Data'[Order_Status] = "delivered"
+			)
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: Sales Performance
+		lineageTag: 73791b57-712e-48f5-97dd-069c740652f3
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Delivery Rate' =
+			
+			DIVIDE(
+			        [Delivered Orders],
+			        [Total Orders]
+			    )
+		formatString: 0%;-0%;0%
+		displayFolder: Logistics & Operations
+		lineageTag: e4a2c378-c53f-46e1-b716-46cc837ae256
+
+	measure 'Canceled Orders' =
+			
+			CALCULATE(
+			    [Total Orders],
+			    'Orders Data'[Order_Status] = "canceled"
+			)
+		formatString: #,0
+		displayFolder: Order Performance
+		lineageTag: 7629ba2a-4ac1-4d09-857f-ebba52db311e
+
+	measure 'Cancellation Rate' =
+			
+			DIVIDE(
+			        [Canceled Orders],
+			        [Total Orders]
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Logistics & Operations
+		lineageTag: ecd78c5e-388b-420b-ba00-4aca61fe9bd7
+
+	measure 'Late Delivery Orders' =
+			
+			CALCULATE(
+			    [Total Orders],
+			    'Orders Data'[Late_Delivery_Flag] = 1,
+			    'Orders Data'[Order_Status] = "delivered"
+			)
+		formatString: #,0
+		displayFolder: Order Performance
+		lineageTag: b1c02122-b7a8-4fa2-8b17-8fdefda3bd79
+
+	measure 'Late Delivery Rate' =
+			
+			DIVIDE(
+			    [Late Delivery Orders],
+			    [Delivered Orders]
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Logistics & Operations
+		lineageTag: 1503baf7-c626-408a-86a8-799c85cf3811
+
+	measure 'Early Delivery Orders' =
+			
+			CALCULATE(
+			    [Total Orders],
+			    'Orders Data'[Early_Delivery_Flag] = 1,
+			    'Orders Data'[Order_Status] = "delivered"
+			)
+		formatString: #,0
+		displayFolder: Order Performance
+		lineageTag: 6153d2f5-f7bf-4efe-82fa-88f5c4846355
+
+	measure 'Early Delivery Rate' =
+			
+			DIVIDE(
+			        [Early Delivery Orders],
+			        [Delivered Orders]
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Logistics & Operations
+		lineageTag: d486419b-bb9b-417c-a587-51e74834d1f6
+
+	measure 'Average Items per Order' =
+			
+			DIVIDE(
+			        [Total Order Items],
+			        [Total Orders]
+			)
+		formatString: 0.00
+		displayFolder: Order Performance
+		lineageTag: dc2dfa66-939b-4211-81d0-6805f6351a76
+
+	measure 'Repeat Customers' =
+			
+			COUNTROWS(
+			    FILTER(
+			        VALUES('Customer Lookup'[Customer_Unique_ID]),
+			        CALCULATE([Total Orders]) > 1
+			    )
+			)
+		formatString: #,0
+		displayFolder: Customer Experience
+		lineageTag: 24f4ef2a-3e4b-4f1a-b2b5-d3fe5b765f58
+
+	measure 'Repeat Customer Rate' =
+			
+			DIVIDE(
+			        [Repeat Customers],
+			        [Total Customers]
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Customer Experience
+		lineageTag: a97fc1bf-c6cc-4eef-a7f0-30433d9f8f78
+
+	measure 'Sales per Customer' =
+			
+			DIVIDE(
+			        [Delivered Sales],
+			        [Total Customers]
+			)
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: Customer Experience
+		lineageTag: fdfef41a-1d57-4c98-9fa1-e320ff03d052
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Orders per Customer' =
+			
+			DIVIDE(
+			        [Total Orders],
+			        [Total Customers]
+			)
+		formatString: 0
+		displayFolder: Customer Experience
+		lineageTag: c46590c8-1daa-4c3b-8233-2915027ae26e
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure 'Retained Customers' =
+			
+			
+			VAR CurrentYear =
+			    SELECTEDVALUE('Calendar Lookup'[Year])
+			
+			VAR CurrentYearCustomerKeys =
+			    VALUES('Orders Data'[CustomerKey])
+			
+			VAR CurrentYearCustomers =
+			    CALCULATETABLE(
+			        VALUES('Customer Lookup'[Customer_Unique_ID]),
+			        TREATAS(
+			            CurrentYearCustomerKeys,
+			            'Customer Lookup'[CustomerKey]
+			        )
+			    )
+			
+			VAR NextYearCustomerKeys =
+			    CALCULATETABLE(
+			        VALUES('Orders Data'[CustomerKey]),
+			        REMOVEFILTERS('Calendar Lookup'),
+			        'Calendar Lookup'[Year] = CurrentYear + 1
+			    )
+			
+			
+			VAR NextYearCustomers =
+			    CALCULATETABLE(
+			        VALUES('Customer Lookup'[Customer_Unique_ID]),
+			        TREATAS(
+			            NextYearCustomerKeys,
+			            'Customer Lookup'[CustomerKey]
+			        )
+			    )
+			
+			RETURN
+			    COUNTROWS(
+			        INTERSECT(
+			            CurrentYearCustomers,
+			            NextYearCustomers
+			        )
+			    )
+		formatString: #,0
+		displayFolder: Customer Experience
+		lineageTag: 58e2967c-ca60-4bfe-b64a-53e6ad5a49b2
+
+	measure 'Positive Review Rate' =
+			
+			DIVIDE(
+			    CALCULATE(
+			        COUNTROWS('OrderReviews Data'),
+			        'OrderReviews Data'[Review_Score] >= 4
+			    ),
+			    COUNTROWS('OrderReviews Data')
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Customer Experience
+		lineageTag: b8d6d475-639b-4e1b-86d5-8bffa1e68380
+
+	measure 'Poor Review Rate' =
+			
+			DIVIDE(
+			    CALCULATE(
+			        COUNTROWS('OrderReviews Data'),
+			        'OrderReviews Data'[Review_Score] <= 2
+			    ),
+			    COUNTROWS('OrderReviews Data')
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Customer Experience
+		lineageTag: 52187178-7848-433d-8361-96c044cc4553
+
+	measure 'Average Item Price' =
+			
+			AVERAGE('OrderItems Data'[Price])
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: Sales Performance
+		lineageTag: ece4c590-40a7-49de-bfed-3538d60fd3f4
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Previous Year Delivered Sales' =
+			
+			CALCULATE(
+			    [Delivered Sales],
+			    DATEADD(
+			        'Calendar Lookup'[Full Date],
+			        -1,
+			        YEAR
+			    )
+			)
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: Sales Performance
+		lineageTag: 06f417d3-71c4-4c12-9a41-db21976d1b7b
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'YoY Delivered Sales Growth %' =
+			
+			DIVIDE(
+			        [Delivered Sales] - [Previous Year Delivered Sales],
+			        [Previous Year Delivered Sales]
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Sales Performance
+		lineageTag: e2bca269-b3b9-42e6-bf5d-a48a7cfc56e8
+
+	measure 'Average Freight Cost' =
+			
+			AVERAGE('OrderItems Data'[Freight_Value])
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: Logistics & Operations
+		lineageTag: 608053c6-9dc1-48f7-9d37-bd7a595ebba7
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Freight Cost % of Sales' =
+			
+			DIVIDE(
+			        SUM('OrderItems Data'[Freight_Value]),
+			        SUM('OrderItems Data'[Price])
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Logistics & Operations
+		lineageTag: c7f2ff99-3063-428f-bcbc-93bbec0ad298
+
+	measure 'Total Freight' =
+			
+			SUM('OrderItems Data'[Freight_Value])
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: Logistics & Operations
+		lineageTag: aa8420d2-acff-4fef-9916-646213f75dbe
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Delivered Sales %' =
+			
+			DIVIDE(
+			        [Delivered Sales],
+			        [Gross Sales]
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Sales Performance
+		lineageTag: 7d58bafc-545d-4bb8-a6b2-8e2e29cb40a0
+
+	measure 'Average Late Delivery Days' =
+			
+			AVERAGEX(
+			    FILTER(
+			        'Orders Data',
+			        'Orders Data'[Order_Status] = "delivered"
+			            && 'Orders Data'[Late_Delivery_Flag] = 1
+			            && NOT ISBLANK('Orders Data'[Customer_Delivery_Date])
+			            && NOT ISBLANK('Orders Data'[Estimated_Delivery_Date])
+			    ),
+			    DATEDIFF(
+			        'Orders Data'[Estimated_Delivery_Date],
+			        'Orders Data'[Customer_Delivery_Date],
+			        DAY
+			    )
+			)
+		formatString: 0
+		displayFolder: Logistics & Operations
+		lineageTag: 95ba5ed3-eef0-4021-ab6f-9c05ded17a04
+
+	measure 'Total Sellers' =
+			
+			DISTINCTCOUNT('OrderItems Data'[SellerKey])
+		formatString: #,0
+		displayFolder: Seller Performance
+		lineageTag: e01de4a6-999a-43f4-9411-2d1fbc660f40
+
+	measure 'Seller Sales' =
+			
+			CALCULATE(
+			    SUM('OrderItems Data'[Price]),
+			    USERELATIONSHIP(
+			        'OrderItems Data'[SellerKey],
+			        'Seller Lookup'[SellerKey]
+			    )
+			)
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: Seller Performance
+		lineageTag: ffe39b6f-a07c-4358-b8a3-ac371dbbe915
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Seller Orders' =
+			
+			CALCULATE(
+			    DISTINCTCOUNT('OrderItems Data'[Order_ID]),
+			    USERELATIONSHIP(
+			        'OrderItems Data'[SellerKey],
+			        'Seller Lookup'[SellerKey]
+			    )
+			)
+		formatString: #,0
+		displayFolder: Seller Performance
+		lineageTag: 1ef5aeef-7330-4c33-b7ba-69e2d00714b4
+
+	measure 'Seller AOV' =
+			
+			DIVIDE(
+			        [Seller Sales],
+			        [Seller Orders]
+			)
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: Seller Performance
+		lineageTag: 62ec2aa5-a84c-4140-a2b4-70544cae6c33
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Seller Delivery Rate' =
+			
+			VAR SellerOrderIDs =
+			    CALCULATETABLE(
+			        VALUES('OrderItems Data'[Order_ID]),
+			        USERELATIONSHIP(
+			            'OrderItems Data'[SellerKey],
+			            'Seller Lookup'[SellerKey]
+			        )
+			    )
+			
+			VAR DeliveredSellerOrders =
+			    CALCULATE(
+			        DISTINCTCOUNT('Orders Data'[OrderID]),
+			        'Orders Data'[Order_Status] = "delivered",
+			        TREATAS(
+			            SellerOrderIDs,
+			            'Orders Data'[OrderID]
+			        )
+			    )
+			
+			RETURN
+			    DIVIDE(
+			        DeliveredSellerOrders,
+			        [Seller Orders]
+			    )
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Seller Performance
+		lineageTag: abd3c24b-70c8-48e4-8e4a-7f3ad643a03e
+
+	measure 'Seller Late Delivery Rate' = ```
+			
+			
+			VAR SellerOrderIDs = 
+			    CALCULATETABLE(
+			        VALUES('OrderItems Data'[Order_ID]),
+			        USERELATIONSHIP(
+			            'OrderItems Data'[SellerKey],
+			            'Seller Lookup'[SellerKey]
+			        )
+			    )
+			
+			VAR LateSellerOrders = 
+			    CALCULATE(
+			        DISTINCTCOUNT('Orders Data'[OrderID]),
+			        'Orders Data'[Late_Delivery_Flag] = 1,
+			        TREATAS(
+			            SellerOrderIDs,
+			            'Orders Data'[OrderID]
+			        )
+			    )
+			
+			RETURN 
+			    DIVIDE(
+			            COALESCE(LateSellerOrders,0),
+			            [Seller Orders]
+			    )
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Seller Performance
+		lineageTag: ad0bd094-6a69-4a2b-b4ac-ffcdea7bee5c
+
+	measure 'Seller Sales Contribution %' =
+			
+			DIVIDE(
+			        [Seller Sales],
+			        CALCULATE(
+			            [Gross Sales],
+			            REMOVEFILTERS('Seller Lookup')
+			        )
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Seller Performance
+		lineageTag: c332845a-40d2-47ec-a2af-88d627cb2a0a
+
+	measure 'Seller Sales Rank' = ```
+			
+			RANKX(
+			    ALL('Seller Lookup'[Seller_ID]),
+			    [Seller Sales],
+			    ,
+			    DESC,
+			    Dense
+			)
+			
+			```
+		formatString: 0
+		displayFolder: Seller Performance
+		lineageTag: dd5b46e1-81ec-4125-8dd7-afcc078f59d2
+
+	measure 'Top 10 Seller' =
+			
+			IF(
+			    [Seller Sales Rank] <= 10,
+			    1,
+			    0
+			)
+		formatString: 0
+		displayFolder: Seller Performance
+		lineageTag: 2ffe7727-d0b5-46c3-ab4a-aa652b720ecb
+
+	measure 'Seller Late Delivery Rank' =
+			
+			RANKX(
+			    ALL('Seller Lookup'[Seller_ID]),
+			    [Seller Late Delivery Rate],
+			    ,
+			    DESC,
+			    Dense
+			)
+		formatString: 0
+		displayFolder: Seller Performance
+		lineageTag: 1811f7bc-6a90-4ab4-bf82-34319c243c4d
+
+	measure 'High Risk Seller Rate' =
+			
+			VAR OverallLateRate =
+			    CALCULATE(
+			        [Late Delivery Rate],
+			        REMOVEFILTERS('Seller Lookup')
+			    )
+			RETURN
+			    IF(
+			        [Seller Orders] >= 100
+			            && [Seller Late Delivery Rate] > OverallLateRate,
+			        [Seller Late Delivery Rate],
+			        BLANK()
+			    )
+		formatString: 0%;-0%;0%
+		displayFolder: Seller Performance
+		lineageTag: 62f1ba6f-cf42-4de3-b517-726630c88d3c
+
+	measure 'Top 10 Seller Sales Contribution %' =
+			
+			VAR TopSellers =
+			    TOPN(
+			        10,
+			        ALL('Seller Lookup'[SellerKey]),
+			        [Seller Sales],
+			        DESC
+			    )
+			
+			VAR TopSellerSales =
+			    CALCULATE(
+			        [Seller Sales],
+			        TopSellers
+			    )
+			
+			VAR TotalSales =
+			    CALCULATE(
+			        [Gross Sales],
+			        REMOVEFILTERS('Seller Lookup')
+			    )
+			
+			RETURN
+			    DIVIDE(
+			        TopSellerSales,
+			        TotalSales
+			    )
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Seller Performance
+		lineageTag: 5b711eee-fb61-476f-b221-53d4a7acc17d
+
+	measure 'Total Products' =
+			
+			DISTINCTCOUNT('Product Lookup'[ProductKey])
+		formatString: #,0
+		displayFolder: Product & Category Performance
+		lineageTag: 0087b988-95e7-4fa8-bb6e-1d5e3b34f821
+
+	measure 'Product Sales' =
+			
+			[Gross Sales]
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: Product & Category Performance
+		lineageTag: 43a6ba3a-857d-41c3-9a26-4c4ae1a888a2
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Product Orders' =
+			
+			DISTINCTCOUNT('OrderItems Data'[Order_ID])
+		formatString: #,0
+		displayFolder: Product & Category Performance
+		lineageTag: dda0347f-582e-4165-a1ed-9785c37fdc36
+
+	measure 'Category Sales' =
+			
+			[Gross Sales]
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: Product & Category Performance
+		lineageTag: 08eaa9d9-8117-4b0d-bc6f-125c01c7ef64
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Category Sales Contribution %' =
+			
+			DIVIDE(
+			    [Category Sales],
+			    CALCULATE(
+			        [Gross Sales],
+			        REMOVEFILTERS('Category Lookup')
+			    )
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Geography & Market
+		lineageTag: 7d60da48-40f2-4850-b2fb-38f589fb2eed
+
+	measure 'Category Sales Rank' =
+			
+			VAR CategoryTable =
+			    ALL('Category Lookup'[Display Category Name])
+			
+			RETURN
+			    RANKX(
+			        CategoryTable,
+			        CALCULATE([Category Sales]),
+			        ,
+			        DESC,
+			        DENSE
+			    )
+		formatString: #,0
+		displayFolder: Product & Category Performance
+		lineageTag: 508b0f86-74f4-47b2-842f-d64467be6779
+
+	measure 'Product Sales Contribution %' =
+			
+			DIVIDE(
+			    [Product Sales],
+			    CALCULATE(
+			        [Gross Sales],
+			        ALL('Product Lookup')
+			    )
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Product & Category Performance
+		lineageTag: 84c999ef-b6a2-48d9-a1e5-f5e8bac297e1
+
+	measure 'Category Orders' =
+			
+			DISTINCTCOUNT('OrderItems Data'[Order_ID])
+		formatString: #,0
+		displayFolder: Product & Category Performance
+		lineageTag: 57f73689-9a7e-4f03-8f08-1f460dc87600
+
+	measure 'Category AOV' =
+			
+			DIVIDE(
+			    [Category Sales],
+			    [Category Orders]
+			)
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: Product & Category Performance
+		lineageTag: e467369e-313e-4fee-8ef8-9234235f617e
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Product AOV' =
+			
+			DIVIDE(
+			    [Product Sales],
+			    [Product Orders]
+			)
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: Product & Category Performance
+		lineageTag: 7dc32371-21cd-4125-a69b-b9d672bdd791
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Product Order Contribution %' =
+			
+			DIVIDE(
+			    [Product Orders],
+			    CALCULATE(
+			        DISTINCTCOUNT('OrderItems Data'[Order_ID]),
+			        REMOVEFILTERS('Product Lookup')
+			    )
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Product & Category Performance
+		lineageTag: b98a7079-6d25-43a5-8c77-9b2999863b7b
+
+	measure 'Product Delivered Orders' =
+			
+			CALCULATE(
+			    DISTINCTCOUNT('Orders Data'[OrderID]),
+			    'Orders Data'[Order_Status] = "delivered",
+			    TREATAS(
+			        VALUES('OrderItems Data'[Order_ID]),
+			        'Orders Data'[OrderID]
+			    )
+			)
+		formatString: #,0
+		displayFolder: Logistics & Operations
+		lineageTag: 04384c05-1bd9-4f37-b5ab-caaf13caa759
+
+	measure 'Product Delivery Rate' =
+			
+			DIVIDE(
+			    [Product Delivered Orders],
+			    [Product Orders],
+			    0
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Logistics & Operations
+		lineageTag: 298a596a-9ad5-4487-8691-f43ef31e9efa
+
+	measure 'Product Late Delivery Rate' =
+			
+			VAR ProductOrderIDs =
+			    VALUES('OrderItems Data'[Order_ID])
+			
+			VAR LateProductOrders =
+			    CALCULATE(
+			        DISTINCTCOUNT('Orders Data'[OrderID]),
+			        'Orders Data'[Late_Delivery_Flag] = 1,
+			        TREATAS(
+			            ProductOrderIDs,
+			            'Orders Data'[OrderID]
+			        )
+			    )
+			
+			RETURN
+			    DIVIDE(
+			        COALESCE(LateProductOrders,0),
+			        [Product Orders]
+			    )
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Logistics & Operations
+		lineageTag: 3fb3fd04-26ff-478a-a369-fe16cff2e62b
+
+	measure 'Product Average Late Delivery Days' =
+			
+			VAR ProductOrderIDs =
+			    VALUES('OrderItems Data'[Order_ID])
+			
+			RETURN
+			    COALESCE(
+			        CALCULATE(
+			            [Average Late Delivery Days],
+			            TREATAS(
+			                ProductOrderIDs,
+			                'Orders Data'[OrderID]
+			            )
+			        ),
+			        0
+			    )
+		formatString: 0
+		displayFolder: Logistics & Operations
+		lineageTag: 98645a34-25ae-4e6a-a0fd-9da3834c71cf
+
+	measure 'Geography Sales' =
+			
+			[Gross Sales]
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: Geography & Market
+		lineageTag: 0b7d4e6f-c5df-4e4b-b8e2-41626e3265ac
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Geography Orders' =
+			
+			[Total Orders]
+		formatString: #,0
+		displayFolder: Geography & Market
+		lineageTag: a0396ce7-b37a-4edb-922c-6ef603834f01
+
+	measure 'Geography Sales Contribution %' =
+			
+			DIVIDE(
+			    [Geography Sales],
+			    CALCULATE(
+			        [Gross Sales],
+			        REMOVEFILTERS('Geography Lookup')
+			    )
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Product & Category Performance
+		lineageTag: 755bf67d-c469-4bcc-a652-283f588fc904
+
+	measure 'Geography Customers' =
+			
+			DISTINCTCOUNT(
+			    'Customer Lookup'[Customer_Unique_ID]
+			)
+		formatString: #,0
+		displayFolder: Geography & Market
+		lineageTag: 6bdee778-6849-41a3-8d97-16d780446064
+
+	measure 'Review Count' =
+			
+			COUNTROWS('OrderReviews Data')
+		formatString: #,0
+		displayFolder: Customer Experience
+		lineageTag: 08d310ff-9b49-4a85-a0f7-41816a8c7cdf
+
+	measure 'Review Score %' =
+			
+			DIVIDE(
+			    [Review Count],
+			    CALCULATE(
+			        [Review Count],
+			        REMOVEFILTERS('OrderReviews Data'[Review_Score])
+			    ),
+			    0
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Customer Experience
+		lineageTag: 5ec1a1d7-5d58-4588-a8c1-ac2d5506d61d
+
+	measure 'Payment Orders' =
+			
+			DISTINCTCOUNT('OrderPayment Data'[Order_ID])
+		formatString: #,0
+		displayFolder: Payment Analytics
+		lineageTag: e5f265ee-9384-40c0-a9c8-0106552268e1
+
+	measure 'Payment Method %' =
+			
+			DIVIDE(
+			    [Payment Orders],
+			    CALCULATE(
+			        [Payment Orders],
+			        REMOVEFILTERS('OrderPayment Data'[Payment_Type])
+			    ),
+			    0
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Payment Analytics
+		lineageTag: 403174ef-7c71-45eb-b13c-d19d2a76bb29
+
+	measure 'Average Installments' =
+			
+			AVERAGE('OrderPayment Data'[Payment_Installments])
+		formatString: 0.00
+		displayFolder: Payment Analytics
+		lineageTag: 5e751a65-e8d5-420b-92a4-5af0f2a144d3
+
+	measure 'Installment Usage %' =
+			
+			DIVIDE(
+			    CALCULATE(
+			        DISTINCTCOUNT('OrderPayment Data'[Order_ID]),
+			        'OrderPayment Data'[Payment_Installments] > 1
+			    ),
+			    [Payment Orders],
+			    0
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Payment Analytics
+		lineageTag: 73941afa-1670-4674-a69d-d5192439beae
+
+	measure 'Payment Value' =
+			
+			SUM('OrderPayment Data'[Payment_Value])
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		displayFolder: Payment Analytics
+		lineageTag: 5d5c5cf2-e80c-45a0-853d-84d8ec1f8839
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Not Delivered Orders' =
+			
+			[Total Orders] - [Delivered Orders]
+		formatString: 0
+		displayFolder: Order Performance
+		lineageTag: 7c889d1d-95bd-4b08-80fb-b94a67343cf4
+
+	measure 'Top Sales Category' =
+			
+			VAR TopCategory =
+			    TOPN(
+			        1,
+			        ALL('Category Lookup'[Display Category Name]),
+			        [Category Sales],
+			        DESC
+			    )
+			RETURN
+			    CONCATENATEX(
+			        TopCategory,
+			        'Category Lookup'[Display Category Name],
+			        ", "
+			    )
+		displayFolder: Product & Category Performance
+		lineageTag: 82613738-1d2b-4d83-abd9-bd4364ed722e
+
+	measure 'Top Sales State' =
+			
+			VAR TopState =
+			    TOPN(
+			        1,
+			        ALL('Geography Lookup'[State]),
+			        [Geography Sales],
+			        DESC
+			    )
+			RETURN
+			    CONCATENATEX(
+			        TopState,
+			        'Geography Lookup'[State],
+			        ", "
+			    )
+		displayFolder: Executive KPIs
+		lineageTag: 9ba7952f-ff16-437b-9013-97c795a6de1c
+
+	measure 'Previous Month Gross Sales' =
+			
+			CALCULATE(
+			    [Gross Sales],
+			    DATEADD('Calendar Lookup'[Full Date], -1, MONTH)
+			)
+		formatString: "R$"\ #,0.00;-"R$"\ #,0.00;"R$"\ #,0.00
+		lineageTag: 4bba4d91-f86a-487b-87a1-596321ff142f
+
+		annotation PBI_FormatHint = {"currencyCulture":"pt-BR"}
+
+	measure 'Previous Month Orders' =
+			
+			CALCULATE(
+			    [Total Orders],
+			    DATEADD('Calendar Lookup'[Full Date], -1, MONTH)
+			)
+		formatString: #,0
+		lineageTag: b6efaf9c-4f51-4c28-baee-78bba94dab27
+
+	measure 'Previous Month Late Delivery Rate' =
+			
+			CALCULATE(
+			    [Late Delivery Rate],
+			    DATEADD('Calendar Lookup'[Full Date], -1, MONTH)
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: f98c0049-caf1-46af-a9cf-13485f321856
+
+	measure 'Single Order Customers' =
+			
+			[Total Customers] - [Repeat Customers]
+		formatString: #,0
+		lineageTag: c02d5cba-3602-413b-a7d6-619d67174a94
+
+	measure 'Customer Review Score' = ```
+			
+			CALCULATE(
+			    AVERAGE('OrderReviews Data'[Review_Score]),
+			    USERELATIONSHIP(
+			        'Orders Data'[OrderID],
+			        'OrderReviews Data'[Order_ID]
+			    )
+			)
+			    
+			```
+		displayFolder: Customer Experience
+		lineageTag: 92bc527b-e06a-42ac-96c9-a77dd01a7210
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Customer Retention Rate (Selected Period)' =
+			
+			VAR SelectedYear =
+			    MAX('Calendar Lookup'[Year])
+			RETURN
+			    CALCULATE(
+			        [Customer Retention Rate],
+			        REMOVEFILTERS('Calendar Lookup'),
+			        'Calendar Lookup'[Year] = SelectedYear
+			    )
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Customer Experience
+		lineageTag: 6bdf8bf1-9bba-4673-83c6-e72b46642173
+
+	measure 'Customer Retention Rate' = ```
+			
+			 DIVIDE(     
+			        [Retained Customers],         
+			        [Total Customers] 
+			)
+			```
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Customer Experience
+		lineageTag: 0b66c885-a1de-4348-9302-4973c1a9b795
+
+	measure 'Top High Risk Seller ID' =
+			
+			VAR RiskySellers =
+			    FILTER(
+			        ALL('Seller Lookup'[SellerKey]),
+			        CALCULATE([High Risk Seller Rate]) = 1
+			    )
+			VAR TopSeller =
+			    TOPN(
+			        1,
+			        RiskySellers,
+			        CALCULATE([Seller Late Delivery Rate]),
+			        DESC
+			    )
+			VAR TopSellerKey =
+			    MAXX(
+			        TopSeller,
+			        'Seller Lookup'[SellerKey]
+			    )
+			RETURN
+			    CALCULATE(
+			        SELECTEDVALUE('Seller Lookup'[Seller_ID]),
+			        'Seller Lookup'[SellerKey] = TopSellerKey
+			    )
+		lineageTag: f77ba6ab-6962-4dcb-b555-a4e3391d7d51
+
+	measure 'Selected Seller ID'
+		lineageTag: e18af972-17e2-41b7-b0fd-fe14ad3f9049
+
+	measure 'Adjusted Product Sales' =
+			
+			[Product Sales] *
+			(1 + [Price Adjustment (%) Value])
+		lineageTag: 7255cd83-9498-4c95-8c5b-d28f6615c5c5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition 'Measure Table' = m
+		mode: import
+		source =
+				let
+				  Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Column1 = _t]),
+				    #"Removed Columns" = Table.RemoveColumns(Source,{"Column1"})
+				in
+				  #"Removed Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

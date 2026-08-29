@@ -1,0 +1,51 @@
+table 'Product Performance Metric'
+	lineageTag: 322baaa9-c7a4-449e-aad1-e93b21a88675
+
+	column 'Product Performance Metric'
+		lineageTag: 6ef5f62b-5bd1-4393-947b-7cb551a9cb6b
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Product Performance Metric Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Product Performance Metric Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Product Performance Metric Fields'
+		isHidden
+		lineageTag: bee04bca-01ad-44df-ba41-d068bf230e4b
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Product Performance Metric Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Product Performance Metric Order'
+		isHidden
+		formatString: 0
+		lineageTag: b3e9cb2e-75a0-40b0-a7c4-15ec5c8e68ff
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Product Performance Metric' = calculated
+		mode: import
+		source =
+				{
+				    (" Sales", NAMEOF('Measure Table'[Product Sales]), 0),
+				    (" Orders", NAMEOF('Measure Table'[Product Orders]), 1),
+				    (" AOV", NAMEOF('Measure Table'[Product AOV]), 2),
+				    (" Delivery Rate", NAMEOF('Measure Table'[Product Delivery Rate]), 3),
+				    (" Late Delivery Rate", NAMEOF('Measure Table'[Product Late Delivery Rate]), 4)
+				}
+
+	annotation PBI_Id = 480fe4adced54040b489c7a7f02d3acf
+

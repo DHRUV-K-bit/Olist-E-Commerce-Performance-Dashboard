@@ -1,0 +1,50 @@
+table 'Delivery Performance Metric'
+	lineageTag: 5c5a695d-e06f-4724-98d1-9b66c625f2aa
+
+	column 'Delivery Performance Metric'
+		lineageTag: b47fe0f0-dca3-4dee-b2f3-4df82273f2a4
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Delivery Performance Metric Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Delivery Performance Metric Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Delivery Performance Metric Fields'
+		isHidden
+		lineageTag: 870aa8bb-9a39-4dfe-842d-b561aeacd20a
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Delivery Performance Metric Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Delivery Performance Metric Order'
+		isHidden
+		formatString: 0
+		lineageTag: eb521de1-9307-44ba-b384-fda89be5ed7c
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Delivery Performance Metric' = calculated
+		mode: import
+		source =
+				{
+				    ("Delivery Rate", NAMEOF('Measure Table'[Delivery Rate]), 0),
+				    ("Late Delivery Rate", NAMEOF('Measure Table'[Late Delivery Rate]), 1),
+				    ("Early Delivery Rate", NAMEOF('Measure Table'[Early Delivery Rate]), 2),
+				    ("Average Delivery Time", NAMEOF('Measure Table'[Average Delivery Days]), 3)
+				}
+
+	annotation PBI_Id = d263dbd209f349d5afb4435258fd4012
+

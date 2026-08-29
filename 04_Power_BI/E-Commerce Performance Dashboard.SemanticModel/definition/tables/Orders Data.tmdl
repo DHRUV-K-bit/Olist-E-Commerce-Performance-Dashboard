@@ -1,0 +1,155 @@
+table 'Orders Data'
+	lineageTag: ca7ec31d-2ce3-4e57-9c85-17798b73cca4
+
+	column OrderID
+		dataType: string
+		lineageTag: 651950fe-4b78-4fd2-ad5b-c74dbb3eaf7a
+		summarizeBy: none
+		sourceColumn: OrderID
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 161b0f53-64bf-4c91-b526-5b8dd3ed4245
+		summarizeBy: count
+		sourceColumn: CustomerKey
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = User
+
+	column PurchaseDateKey
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 783e7d8e-b98b-4bad-a0c8-72db349a21ec
+		summarizeBy: none
+		sourceColumn: PurchaseDateKey
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	column Order_Status
+		dataType: string
+		lineageTag: 0040b1bb-1d4e-40a8-abca-4929225cc90d
+		summarizeBy: none
+		sourceColumn: Order_Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column Purchase_Timestamp
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 2246baef-6a83-4323-94ac-82591b512c4d
+		summarizeBy: none
+		sourceColumn: Purchase_Timestamp
+
+		variation Variation
+			isDefault
+			relationship: 249f4be4-f241-484f-9dcc-7bfafbf29673
+			defaultHierarchy: LocalDateTable_08f35404-ba63-4378-8f39-bf251a8e0748.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column Approved_Timestamp
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 5366d4ed-4fd9-4159-a616-799c59ac7789
+		summarizeBy: none
+		sourceColumn: Approved_Timestamp
+
+		variation Variation
+			isDefault
+			relationship: 9741c2e8-7cb5-4aeb-b6a1-2d8237730778
+			defaultHierarchy: LocalDateTable_64c5a61f-0c7c-4152-b3ad-6a5375f13724.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column Carrier_Date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 23200f3a-cffa-48aa-8b85-9595d9b00e54
+		summarizeBy: none
+		sourceColumn: Carrier_Date
+
+		variation Variation
+			isDefault
+			relationship: 8d4d0a61-50c1-4789-a8f4-52da5ccc572e
+			defaultHierarchy: LocalDateTable_870aefbd-d22c-4dea-bc45-f1fd761f7fef.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column Customer_Delivery_Date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 02976209-2525-48eb-9fd7-3719a0b37fd3
+		summarizeBy: none
+		sourceColumn: Customer_Delivery_Date
+
+		variation Variation
+			isDefault
+			relationship: 4c02a03d-65fd-4b67-b9fa-cc4aa10b87ec
+			defaultHierarchy: LocalDateTable_53b890d5-1732-4616-9584-c5e1f7269298.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column Estimated_Delivery_Date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 883904db-4974-4fec-a64b-93bd5694e135
+		summarizeBy: none
+		sourceColumn: Estimated_Delivery_Date
+
+		variation Variation
+			isDefault
+			relationship: cb297ea3-f5a3-4fcb-86c6-f0df814d4002
+			defaultHierarchy: LocalDateTable_5974c6f9-a65a-4ec4-ba5e-42996fa0db9f.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column Delivery_Days
+		dataType: int64
+		formatString: 0
+		lineageTag: ef833bab-fd4a-44e9-a037-c0856f4f65f5
+		summarizeBy: sum
+		sourceColumn: Delivery_Days
+
+		annotation SummarizationSetBy = Automatic
+
+	column Early_Delivery_Flag
+		dataType: int64
+		formatString: 0
+		lineageTag: f7bcfd83-398a-4187-add5-d341f165ed32
+		summarizeBy: sum
+		sourceColumn: Early_Delivery_Flag
+
+		annotation SummarizationSetBy = Automatic
+
+	column Late_Delivery_Flag
+		dataType: int64
+		formatString: 0
+		lineageTag: 554995fd-25ec-4504-ace4-70c4cd5075dc
+		summarizeBy: sum
+		sourceColumn: Late_Delivery_Flag
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Orders Data' = m
+		mode: import
+		source =
+				let
+				  Source = MySQL.Database("127.0.0.1", "olist_bi"),
+				  #"Navigation 1" = Source{[Schema = "olist_bi", Item = "fact_orders"]}[Data],
+				    #"Removed Columns" = Table.RemoveColumns(#"Navigation 1",{"olist_bi.dim_customer", "olist_bi.fact_orderitems", "olist_bi.fact_orderpayment", "olist_bi.fact_orderreviews"}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Removed Columns",{{"Early_Delivery_Flag", Int64.Type}, {"Late_Delivery_Flag", Int64.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

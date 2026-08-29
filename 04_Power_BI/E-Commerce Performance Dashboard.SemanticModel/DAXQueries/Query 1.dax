@@ -1,0 +1,5 @@
+EVALUATE
+SELECTCOLUMNS(
+    'Geography Lookup', 
+    "Column Name Header", 'Geography Lookup'[State]
+)
